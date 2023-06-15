@@ -80,7 +80,10 @@ class XmlRPCConnector(Connector):
         :param hostname: The hostname of the computer holding the instance of Odoo.
         :param port: The port used by the Odoo instance for XMLRPC (default to 8069).
         """
-        self.url = 'http://%s:%d/xmlrpc' % (hostname, port)
+        if not port is None:
+            self.url = 'http://%s:%d/xmlrpc' % (hostname, port)
+        else:
+            self.url = 'http://%s/xmlrpc' % (hostname)
 
     def send(self, service_name, method, *args):
         url = '%s/%s' % (self.url, service_name)
@@ -97,7 +100,10 @@ class XmlRPCSConnector(XmlRPCConnector):
 
     def __init__(self, hostname, port=8069):
         super(XmlRPCSConnector, self).__init__(hostname, port)
-        self.url = 'https://%s:%d/xmlrpc' % (hostname, port)
+        if not port is None:
+            self.url = 'https://%s:%d/xmlrpc' % (hostname, port)
+        else:
+            self.url = 'https://%s/xmlrpc' % (hostname)
 
 class JsonRPCException(Exception):
     def __init__(self, error):
@@ -134,7 +140,10 @@ class JsonRPCConnector(Connector):
         :param hostname: The hostname of the computer holding the instance of Odoo.
         :param port: The port used by the Odoo instance for JsonRPC (default to 8069).
         """
-        self.url = 'http://%s:%d/jsonrpc' % (hostname, port)
+        if not port is None:
+            self.url = 'http://%s:%d/jsonrpc' % (hostname, port)
+        else:
+            self.url = 'http://%s/jsonrpc' % (hostname)
 
     def send(self, service_name, method, *args):
         return json_rpc(self.url, "call", {"service": service_name, "method": method, "args": args})
@@ -153,7 +162,10 @@ class JsonRPCSConnector(Connector):
         :param hostname: The hostname of the computer holding the instance of Odoo.
         :param port: The port used by the Odoo instance for JsonRPC (default to 8069).
         """
-        self.url = 'https://%s:%d/jsonrpc' % (hostname, port)
+        if not port is None:
+            self.url = 'https://%s:%d/jsonrpc' % (hostname, port)
+        else:
+            self.url = 'https://%s/jsonrpc' % (hostname)
 
     def send(self, service_name, method, *args):
         return json_rpc(self.url, "call", {"service": service_name, "method": method, "args": args})
